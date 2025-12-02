@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: fleet_api
+    restart: always
+    command: npm run dev
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      DATABASE_URL: "postgresql://gui:%23uK9V2-%28%2FR6C@postgres:5432/fleettracker"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: postgres_fleet
+    restart: always
+    environment:
+      POSTGRES_USER: gui
+      POSTGRES_PASSWORD: "#uK9V2-(/R6C"
+      POSTGRES_DB: fleettracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
